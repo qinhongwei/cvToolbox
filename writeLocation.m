@@ -1,4 +1,4 @@
-function writeNum(name, list)
+function writeLocation(name, list)
 % list is a cell, each item is a vector
 fid = fopen(name, 'w');
 tic();
