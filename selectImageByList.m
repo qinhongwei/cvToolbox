@@ -1,5 +1,6 @@
 function selectImageByList(listName, imgPath, savePath)
 imageList = getList(listName);
+imageList = unique(imageList); % remove duplicated
 imageNum = length(imageList);
 notExistIndex = [];
 if ~exist(savePath, 'dir')
@@ -9,7 +10,7 @@ tic;
 for i = 1:imageNum
     dirName = fileparts(imageList{i});
     savePathFull = fullfile(savePath, dirName);
-    if ~exist(savePathFull)
+    if ~exist(savePathFull, 'dir')
         mkdir(savePathFull);
     end;
     imgPathFull = fullfile(imgPath, imageList{i});
