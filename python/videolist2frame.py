@@ -25,7 +25,7 @@ def main():
     i = 0
     print "hello"
     for line in videolist:
-        line = line.strip('\n');
+        line = line.strip('\n')
         print line
         filepath = line
         if os.path.isfile(filepath):
