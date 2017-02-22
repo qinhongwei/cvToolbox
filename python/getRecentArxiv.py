@@ -3,7 +3,7 @@
 # Used to download the arxiv papers of cs.cv
 # results in pdfs, paper url and title list, abstract list, and papers on detection
 # to download paper at 07:30 everyday, type `crontab -e` in shell, and add the following line
-# 30 7 * * * python /data2/qinhw/cvToolbox/python/getRecentArxiv.py >> ~/download.log 2>&1
+# 30 7 * * * python your_absolute_cvToolbox_path/python/getRecentArxiv.py >> ~/download.log 2>&1
 
 import requests
 from lxml import etree
