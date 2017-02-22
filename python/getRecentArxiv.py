@@ -2,6 +2,9 @@
 # Hongwei Qin @2017.02.22
 # Used to download the arxiv papers of cs.cv
 # results in pdfs, paper url and title list, abstract list, and papers on detection
+# to download paper at 07:30 everyday, type `crontab -e` in shell, and add the following line
+# 30 7 * * * python /data2/qinhw/cvToolbox/python/getRecentArxiv.py >> ~/download.log 2>&1
+
 import requests
 from lxml import etree
 import os
@@ -53,7 +56,8 @@ if __name__ == '__main__':
     print folder + ': there are %s' % len(cons1) + '  papers'
     print 'downloading pdfs...'
 
-    os.mkdir('arxiv')
+    if not os.path.exists('arxiv'):
+        os.mkdir('arxiv')
     list_title = 'arxiv/' + folder + '_title.txt'
     list_abstract = 'arxiv/' + folder + '_abstract.md'
     list_detection = 'arxiv/' + folder + '_detection_related.md'
@@ -77,7 +81,7 @@ if __name__ == '__main__':
         authors_field = '//*[@name="citation_author"]//@content' # authors
         paper_abstract = getContent(htm_abstract, abstract_field)  # get papers' abstract
         paper_authors = getContent(htm_abstract, authors_field)  # get papers' authors
-        abstract_info = '%s.' % (1 + indx) + ' [' + title[1:] + '](' + abstract_href + ')\n'
+        abstract_info = '%s.' % (1 + indx) + ' [' + title[1:-1] + '](' + abstract_href + ')\n'
         f_abstract.write(abstract_info)
         for author in paper_authors:
             f_abstract.write(author.encode('utf-8') + '; ')
