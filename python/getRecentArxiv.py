@@ -37,13 +37,15 @@ def getDownPdf(cons, title, folder):
         print('pdf already exists, continue...\n')
 
 if __name__ == '__main__':
-    url_recent = 'http://arxiv.org/list/cs.CV/recent'
+    #url_recent = 'http://arxiv.org/list/cs.CV/recent'
+    url_recent = 'http://arxiv.org/list/cs.CV/pastweek?skip=0&show=100'
     print url_recent
     # xpath of each page
-    xp1 = '//dl[1]//*[@class="list-identifier"]//a[2]//@href'  # pdf href list
-    xp2 = '//dl[1]//*[@class="list-title mathjax"]/text()'  # Title
-    url_abstract = '//dl[1]//*[@class="list-identifier"]//a[1]//@href'  # abstract href list
-    xp_date = '//*[@id="dlpage"]/h3[1]/text()'  # date->folder
+    day_index = 1 # download papers of the #day_index day 1:5
+    xp1 = '//dl[%d]//*[@class="list-identifier"]//a[2]//@href' % day_index  # pdf href list
+    xp2 = '//dl[%d]//*[@class="list-title mathjax"]/text()'  % day_index # Title
+    url_abstract = '//dl[%d]//*[@class="list-identifier"]//a[1]//@href' % day_index  # abstract href list
+    xp_date = '//*[@id="dlpage"]/h3[%d]/text()' % day_index # date->folder
 
     htm0 = getHtml(url_recent)
     cons1 = getContent(htm0, xp1)  # get pdfs' href
@@ -68,11 +70,15 @@ if __name__ == '__main__':
     for indx in range(0, len(cons1)):
         # download pdf and write title
         href = 'http://arxiv.org' + cons1[indx]
-        title = cons2[2 * indx + 1]
-        paper_info = '%s.' % (1 + indx) + ' ' + href + ' ' + title
+        title = cons2[2 * indx + 1][1:-1] # remove the first white space and the last \n
+        paper_info = '%s.' % (1 + indx) + ' ' + href + ' ' + title + '\n'
         print '%s.' % (1 + indx) + ' ' + href + ' ' + title
-        getDownPdf(href, title, folder)
-        f_title.write(paper_info)
+        try:
+            getDownPdf(href, title, folder)
+            f_title.write(paper_info)
+        except:
+            print 'WARNING Download failed'
+            f_title.write(paper_info[:-1] + '\tWARNING: Download failed\n')
 
         # write abstract and authors
         abstract_href = 'http://arxiv.org' + cons_abstract[indx]
@@ -81,7 +87,7 @@ if __name__ == '__main__':
         authors_field = '//*[@name="citation_author"]//@content' # authors
         paper_abstract = getContent(htm_abstract, abstract_field)  # get papers' abstract
         paper_authors = getContent(htm_abstract, authors_field)  # get papers' authors
-        abstract_info = '%s.' % (1 + indx) + ' [' + title[1:-1] + '](' + abstract_href + ')\n'
+        abstract_info = '%s.' % (1 + indx) + ' [' + title + '](' + abstract_href + ')\n'
         f_abstract.write(abstract_info)
         for author in paper_authors:
             f_abstract.write(author.encode('utf-8') + '; ')
@@ -91,7 +97,7 @@ if __name__ == '__main__':
         if ('detection' in title) or ('Detection' in title) or ('Detecting' in title) or ('detecting' in title):
             f_detection.write(abstract_info)
             for author in paper_authors:
-                f_abstract.write(author.encode('utf-8') + '; ')
+                f_detection.write(author.encode('utf-8') + '; ')
             f_detection.write('\n\n' + paper_abstract[1][1:] + '\n\n')
 
     f_title.close()
