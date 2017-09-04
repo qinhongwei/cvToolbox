@@ -6,11 +6,13 @@ time = tic();
 fid_r = fopen(list_name, 'r');
 save_name = strrep(list_name, '.txt', ['_', num2str(first), '_', num2str(last), '.txt']);
 fid_w = fopen(save_name, 'w');
-for i = first:last
+for i = 1:last
     line = fgetl(fid_r);
-    fprintf(fid_w, '%s\n', line);
+    if i >= first
+        fprintf(fid_w, '%s\n', line);
+    end
     if ~mod(i, 1000000)
-        print_speed(i, toc(time), last - first + 1);
+        print_speed(i, toc(time), last);
     end
 end
 fclose(fid_w);
