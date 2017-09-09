@@ -14,7 +14,7 @@ while ischar(tline)
     w = str2num(strCell{4});
     h = str2num(strCell{5});
     x2 = x1 + w - 1;
-    y2 = x2 + h - 1;
+    y2 = y1 + h - 1;
     tline_end = strjoin(strCell(6:end));
     fprintf(fid_w, '%s %d %d %d %d %s\n', imgName, x1, y1, x2, y2, tline_end);
     tline = fgetl(fid);
