@@ -27,6 +27,7 @@ def showAlbum(rootDir):
                 img = cv2.resize(img, (window_width, window_height))
                 cv2.imshow(path, img)
                 cv2.waitKey(0)
+                cv2.destroyAllWindows()
 def main(image_folder):
     showAlbum(image_folder)
 
