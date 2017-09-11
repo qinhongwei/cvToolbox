@@ -14,17 +14,25 @@ def showAlbum(rootDir):
             #a = random.sample(range(100), 1)
             #if path[-4:] == '.jpg' and a == [1]:
             if path[-4:] == '.jpg':
-                print path
+                print path,
                 img = cv2.imread(path)
-                screen_res = 1920., 1080.
-                scale_width = screen_res[0] / img.shape[1]
-                scale_height = screen_res[1] / img.shape[0]
+                print('h x w: %d x %d' % (img.shape[0], img.shape[1])),
+                screen_res = 1080., 1920.
+                scale_width = screen_res[1] / img.shape[1]
+                scale_height = screen_res[0] / img.shape[0]
                 scale = min(scale_width, scale_height)
-                window_width = int(img.shape[1] * scale)
-                window_height = int(img.shape[0] * scale)
+                if scale < 1:
+                    window_width = int(img.shape[1] * scale)
+                    window_height = int(img.shape[0] * scale)
+                    img = cv2.resize(img, (window_width, window_height))
+                    print(', resized to %d x %d' % (window_height, window_width))
+                else:
+                    window_width = img.shape[1]
+                    window_height = img.shape[0]
+                    print('\n'),
+
                 cv2.namedWindow(path, cv2.WINDOW_NORMAL)
                 cv2.resizeWindow(path, window_width, window_height)
-                img = cv2.resize(img, (window_width, window_height))
                 cv2.imshow(path, img)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
