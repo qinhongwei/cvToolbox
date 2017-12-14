@@ -13,7 +13,7 @@ def showAlbum(rootDir):
         else:
             #a = random.sample(range(100), 1)
             #if path[-4:] == '.jpg' and a == [1]:
-            if path[-4:] == '.jpg':
+            if path[-4:] == '.jpg' or path[-4:] == '.png':
                 print path,
                 img = cv2.imread(path)
                 print('h x w: %d x %d' % (img.shape[0], img.shape[1])),
@@ -34,8 +34,10 @@ def showAlbum(rootDir):
                 cv2.namedWindow(path, cv2.WINDOW_NORMAL)
                 cv2.resizeWindow(path, window_width, window_height)
                 cv2.imshow(path, img)
-                cv2.waitKey(0)
+                keypress = cv2.waitKey(0)
                 cv2.destroyAllWindows()
+                if keypress == 27:
+                    break
 def main(image_folder):
     showAlbum(image_folder)
 
