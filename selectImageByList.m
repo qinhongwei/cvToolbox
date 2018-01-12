@@ -1,4 +1,5 @@
 function selectImageByList(listName, imgPath, savePath)
+%% input: listName, imgPath, savePath
 imageList = getList(listName);
 imageList = unique(imageList); % remove duplicated
 imageNum = length(imageList);

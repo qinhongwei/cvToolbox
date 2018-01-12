@@ -2,19 +2,24 @@
 from __future__ import division
 import argparse
 import os
+import random
 
 import cv2
-def showAlbum(rootDir):
+def showAlbum(rootDir, frequency):
+    im_index = 0
     for lists in os.listdir(rootDir):
         path = os.path.join(rootDir, lists)
         #print path
         if os.path.isdir(path):
-            showAlbum(path)
+            showAlbum(path, frequency)
         else:
             #a = random.sample(range(100), 1)
             #if path[-4:] == '.jpg' and a == [1]:
             if path[-4:] == '.jpg' or path[-4:] == '.png':
-                print path,
+                im_index = im_index + 1
+                if random.randint(1, frequency) != 1:
+                    continue
+                print('%d %s' % (im_index, path)),
                 img = cv2.imread(path)
                 print('h x w: %d x %d' % (img.shape[0], img.shape[1])),
                 screen_res = 1080., 1920.
@@ -38,14 +43,19 @@ def showAlbum(rootDir):
                 cv2.destroyAllWindows()
                 if keypress == 27:
                     break
-def main(image_folder):
-    showAlbum(image_folder)
+def main(image_folder, frequency):
+    showAlbum(image_folder, frequency)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='show jpg images in folder.')
     parser.add_argument(
         'image_folder', help='the image folder you\'d like to show.')
+    parser.add_argument(
+        'show_frequency', help='randomly show one of show_frequency.',
+        type=int,
+        default=1)
+
 
     args = parser.parse_args()
-    main(args.image_folder)
+    main(args.image_folder, args.show_frequency)
