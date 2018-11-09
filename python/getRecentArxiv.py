@@ -91,14 +91,14 @@ if __name__ == '__main__':
         f_abstract.write(abstract_info)
         for author in paper_authors:
             f_abstract.write(author.encode('utf-8') + '; ')
-        f_abstract.write('\n\n    > ' + paper_abstract[1][1:] + '\n')
+        f_abstract.write('\n\n    > ' + paper_abstract[0][0:] + '\n')
 
         # write abstract in the topic of detection
         if ('detection' in title) or ('Detection' in title) or ('Detecting' in title) or ('detecting' in title):
             f_detection.write(abstract_info)
             for author in paper_authors:
                 f_detection.write(author.encode('utf-8') + '; ')
-            f_detection.write('\n\n    > ' + paper_abstract[1][1:] + '\n')
+            f_detection.write('\n\n    > ' + paper_abstract[0][0:] + '\n')
 
     f_title.close()
     f_abstract.close()
